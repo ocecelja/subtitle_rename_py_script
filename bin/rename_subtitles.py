@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 
-import os
+import os, stat
 import re
 import shutil
 
 # define the name of the directory to be created
 path = "./Subs"
 
+def remove_readonly(func, path, _):
+    "Clear the readonly bit and reattempt the removal"
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
+
 if (os.path.isdir(path)):
-    os.rmdir(path)
+    shutil.rmtree(path, onerror=remove_readonly)
 
 try:
     os.mkdir(path)
@@ -78,12 +83,18 @@ print("\n")
 for file_x in subtitles_file_list:
     x = re.findall('\d{2}', file_x)
     x = x.pop()
+    #it is TV show
     if x:
         for file_y in video_file_list:
             y = re.findall(x, file_y)
             if y:
                 os.rename(file_x + ".srt", file_y + ".srt")
                 shutil.copy(file_y + ".srt", path.format(os.path.basename(file_y)))
+    #it is a movie
+    else:
+        for file_y in video_file_list:
+            os.rename(file_x + ".srt", file_y + ".srt")
+            shutil.copy(file_y + ".srt", path.format(os.path.basename(file_y)))
 
 print("Final file list:")
 file_list = os.listdir('.')
