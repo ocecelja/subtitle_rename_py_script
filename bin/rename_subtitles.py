@@ -81,20 +81,23 @@ for file in video_file_list:
 print("\n")
 
 for file_x in subtitles_file_list:
-    x = re.findall('\d{2}', file_x)
-    x = x.pop()
+    x = re.findall('[eE]\d{2}', file_x)
+    print(x[0])
+    z = str(x[0])
+    k = z[1:3]
+    print(k)
     #it is TV show
     if x:
         for file_y in video_file_list:
-            y = re.findall(x, file_y)
+            y = re.findall('[eE]' + k, file_y)
             if y:
                 os.rename(file_x + ".srt", file_y + ".srt")
                 shutil.copy(file_y + ".srt", path.format(os.path.basename(file_y)))
     #it is a movie
-    else:
-        for file_y in video_file_list:
-            os.rename(file_x + ".srt", file_y + ".srt")
-            shutil.copy(file_y + ".srt", path.format(os.path.basename(file_y)))
+    # else:
+    #     for file_y in video_file_list:
+    #         os.rename(file_x + ".srt", file_y + ".srt")
+    #         shutil.copy(file_y + ".srt", path.format(os.path.basename(file_y)))
 
 print("Final file list:")
 file_list = os.listdir('.')
