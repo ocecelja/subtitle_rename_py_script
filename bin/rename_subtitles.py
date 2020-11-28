@@ -94,10 +94,10 @@ for file_x in subtitles_file_list:
                 os.rename(file_x + ".srt", file_y + ".srt")
                 shutil.copy(file_y + ".srt", path.format(os.path.basename(file_y)))
     #it is a movie
-    # else:
-    #     for file_y in video_file_list:
-    #         os.rename(file_x + ".srt", file_y + ".srt")
-    #         shutil.copy(file_y + ".srt", path.format(os.path.basename(file_y)))
+    else:
+        for file_y in video_file_list:
+            os.rename(file_x + ".srt", file_y + ".srt")
+            shutil.copy(file_y + ".srt", path.format(os.path.basename(file_y)))
 
 print("Final file list:")
 file_list = os.listdir('.')
